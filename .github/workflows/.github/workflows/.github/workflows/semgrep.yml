@@ -2,14 +2,18 @@ name: Semgrep Scan
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   semgrep:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -42,3 +46,4 @@ jobs:
             jq -r '.results[] | "- " + .check_id + " " + .path + ":" + (.start.line|tostring) + " - " + .extra.message' semgrep-results.json
             exit 1
           fi
+
